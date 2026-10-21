@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: poc-stack
+  namespace: argocd
+spec:
+  project: kagent-poc
+  source:
+    repoURL: https://github.com/simardeep1792/kagent-gitops-poc.git
+    targetRevision: main
+    path: gitops/apps/poc-stack
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: poc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: own-image
+  namespace: argocd
+spec:
+  project: kagent-poc
+  source:
+    repoURL: https://github.com/simardeep1792/kagent-gitops-poc.git
+    targetRevision: main
+    path: gitops/apps/own-image
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: poc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

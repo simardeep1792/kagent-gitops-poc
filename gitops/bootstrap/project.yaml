@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: kagent-poc
+  namespace: argocd
+spec:
+  description: Local Kagent progressive-delivery demonstration
+  sourceRepos:
+    - https://github.com/simardeep1792/kagent-gitops-poc.git
+  destinations:
+    - namespace: poc
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist: []
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'

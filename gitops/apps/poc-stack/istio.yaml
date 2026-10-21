@@ -1,0 +1,68 @@
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: poc-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: api-routes
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - poc-gateway
+  http:
+    - name: primary
+      match:
+        - uri:
+            prefix: /api
+      route:
+        - destination:
+            host: simple-api-stable
+            subset: stable
+          weight: 100
+        - destination:
+            host: simple-api-canary
+            subset: canary
+          weight: 0
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: frontend-route
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - poc-gateway
+  http:
+    - route:
+        - destination:
+            host: frontend
+            port:
+              number: 80
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: simple-api-destination
+spec:
+  host: simple-api-stable
+  subsets:
+    - name: stable
+      labels:
+        app.kubernetes.io/name: simple-api
+    - name: canary
+      labels:
+        app.kubernetes.io/name: simple-api

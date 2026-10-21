@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Progressive Delivery Lab</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <main id="content" tabindex="-1">
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Kagent GitOps POC</p>
+        <h1 id="page-title">Progressive delivery, visible.</h1>
+        <p class="lede">This page reaches the API through Istio. Promote or abort the Argo Rollout, then refresh to see the active version change.</p>
+      </section>
+
+      <section class="status-card" aria-labelledby="api-title">
+        <div>
+          <p class="eyebrow">Live route</p>
+          <h2 id="api-title">API version</h2>
+        </div>
+        <output id="api-status" aria-live="polite">Checking the routed API...</output>
+        <button id="refresh" type="button">Refresh API status</button>
+      </section>
+
+      <section class="guide-grid" aria-label="POC guide">
+        <article>
+          <h2>1. GitOps</h2>
+          <p>Argo CD syncs the desired state from this repository.</p>
+        </article>
+        <article>
+          <h2>2. Delivery</h2>
+          <p>Argo Rollouts controls canary promotion between API revisions.</p>
+        </article>
+        <article>
+          <h2>3. Routing</h2>
+          <p>Istio sends browser requests to the stable or canary API subset.</p>
+        </article>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>
